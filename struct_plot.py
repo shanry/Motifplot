@@ -86,53 +86,14 @@ def draw_motif(plot_str, capture=True, out_dir=None):
         return False, None, getattr(e, 'stdout', None), getattr(e, 'stderr', None)
 
 
-def batch_plot(path_jsonl):
-    import json
-    for i, line in enumerate(open(path_jsonl)):
-        data = json.loads(line)
-        structure = data['target_structure']
-        ID = data['id']
-        name = f'{ID}'
-        print(f'Plotting {name}: {structure}')
-        # plot_structure(structure, name=name)
-        plotstr = f'"{name},{structure}"'
-        print(f"Plot String:")
-        print(f"{plotstr}")
-        draw_motif(plotstr, out_dir=OUT_DIR)
-
-
-def batch_plot_parallel(path_jsonl, num_processes=None):
-    import json
-    from multiprocessing import Pool
-    if num_processes is None:
-        num_processes = os.cpu_count()
-
-    tasks = []
-    for i, line in enumerate(open(path_jsonl)):
-        data = json.loads(line)
-        structure = data['target_structure']
-        ID = data['id']
-        name = f'{ID}'
-        # tasks.append((structure, name))
-        plotstr = f'"{name},{structure}"'
-        tasks.append((plotstr, True, OUT_DIR))
-
-    with Pool(processes=num_processes) as pool:
-        pool.starmap(draw_motif, tasks)
-
-    pool.close()
-    pool.join()
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='RNA Structure Plotting Tool')
     # path
     parser.add_argument('-p', '--path', type=str, default='structures.jsonl', help='Path to the JSONL file for batch plotting')
     parser.add_argument('-l', '--layout', type=int, default=0, help='Layout type (0: SIMPLE, 1: NAVIEW, 2: CIRCULAR, 3: TURTLE, 4: PUZZLER)')
     parser.add_argument('-e', '--example', action='store_true', help='Run example RNA structure plot')
-    parser.add_argument('-y', '--structure', type=str, help='RNA structure in dot-bracket notation')
+    parser.add_argument('-s', '--structure', type=str, help='RNA structure in dot-bracket notation')
     parser.add_argument('-n', '--name', type=str, default="y", help='Name for the output file')
-    parser.add_argument('-r', '--parallel', action='store_true', help='Run batch plotting in parallel')
     parser.add_argument('-o', '--out_dir', type=str, default='./output_structures', help='Output directory for plots')
 
 
@@ -152,13 +113,3 @@ if __name__ == '__main__':
         print(f"Plot String:")
         print(f"{plotstr}")
         success, saved_path, stdout, stderr = draw_motif(plotstr, out_dir=OUT_DIR)
-    else:    
-        if args.path:
-            if args.parallel:
-                print(f'Running batch plotting in parallel using {os.cpu_count()} processes.')
-                batch_plot_parallel(args.path)
-            else:
-                print('Running batch plotting in sequential mode.')
-                batch_plot(args.path)
-        else:
-            print("No structure provided. Use -y to specify a structure or -p for batch plotting.")
