@@ -80,9 +80,9 @@ def draw_motif(plot_str, capture=True, out_dir=None):
 def example():
     y_star = ".....((((((((((((....))))((((....))))))))((((((((....))))((((....))))))))))))...................."
     bpairs_list = [[(8, 73), (11, 38), (41, 72)], [(12, 37), (15, 22), (25, 36)], [(44, 69), (47, 54), (57, 68)]]
-    for bpairs in bpairs_list:
+    for i, bpairs in enumerate(bpairs_list):
         prestr = get_prestr(y_star, bpairs)
-        ID = f"example"
+        ID = f"example_{i}"
         plotstr = f'"{ID},{y_star},{prestr}"'
         if args.verbose:
             print(f"Plot String:")
