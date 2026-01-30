@@ -5,6 +5,7 @@ RNA Visualization
 1.  **Clone the repository:**
 ```bash
 git clone https://github.com/shanry/Motifplot.git
+cd Motifplot/
 ```
 2.  **Install dependencies:**: This project is developed using Python 3.11, and should also work for other Python versions. The ViennaRNA Package (2.7.0) is needed: https://www.tbi.univie.ac.at/RNA/
 
