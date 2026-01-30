@@ -1,6 +1,10 @@
 # MotifPlot
 RNA Visualization
 
+<p align="center">
+  <img src="figs/structure.png" alt="Feature overview" width="250">
+</p>
+
 ## Installation
 1.  **Clone the repository:**
 ```bash
