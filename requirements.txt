@@ -1,0 +1,4 @@
+pandas>=3.0.0
+pdfcropmargins>=2.2.1
+RNA>=0.13.2
+ViennaRNA>=2.7.0
